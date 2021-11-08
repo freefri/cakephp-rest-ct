@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  nginx:
+    image: pmoldes/dev:v11.1-focal-7.4
+    command: bash -c "php-fpm7.4 && service ssh start && nginx -g 'daemon off;'"
+    ports:
+      - '80:80'
+      - '8080:8080'
+      - '443:443'
+      - '2222:22'
+    volumes:
+      - .:/var/www/cplatform/public
+      - ./docker/sites/nginx-site-dev.conf:/etc/nginx/sites-available/courseticket
+    links:
+      - mysql
+      - memcached
+    environment:
+      DB_HOST: mysql
+      DB_DATABASE: phputesting
+      DB_USERNAME: phputesting
+      DB_PASSWORD: a1234
+  memcached:
+    image: docker.io/bitnami/memcached:1.6.9-debian-10-r194
+    ports:
+      - '11211:11211'
+  mysql:
+    image: pmoldes/mysql-no-full-group:0.2
+    ports:
+      - '13307:3306'
+    volumes:
+      - ./app_rest/tmp/docker-mysql-datadir:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: phputesting
+      MYSQL_USER: phputesting
+      MYSQL_PASSWORD: a1234
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_ROOT_HOST: '%'
+
