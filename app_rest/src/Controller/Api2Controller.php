@@ -22,7 +22,6 @@ use Cake\Http\Response;
 use Cake\ORM\Entity;
 use Cake\View\JsonView;
 use Psr\Http\Message\StreamInterface;
-use ValidationError;
 
 /**
  * @property OAuthServerComponent $OAuthServer
@@ -82,9 +81,8 @@ abstract class Api2Controller extends Controller
         return substr(array_pop($className), 0, -1 * strlen('Controller'));
     }
 
-    public final static function route(bool $hasSwagger = false): array
+    public final static function route(): array
     {
-        self::$_hasSwagger[static::cls()] = $hasSwagger;
         return ['controller' => static::cls(), 'action' => 'main'];
     }
 
@@ -340,7 +338,7 @@ abstract class Api2Controller extends Controller
         }
         if ($file->getError() !== UPLOAD_ERR_OK) {
             if ($file->getError() === UPLOAD_ERR_INI_SIZE) {
-                throw new ValidationError('upload failed, max ' . ini_get('upload_max_filesize') . 'B', 500);
+                throw new InternalErrorException('upload failed, max ' . ini_get('upload_max_filesize') . 'B', 500);
             }
             throw new InternalErrorException('Error uploading file, code: ' . $file['error'] ?? '');
         }

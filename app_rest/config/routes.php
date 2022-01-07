@@ -1,23 +1,24 @@
 <?php
 
+use Cake\Http\Middleware\CsrfProtectionMiddleware;
 use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 
 return static function (RouteBuilder $routes) {
+    $routes->scope('/api/v2', function (RouteBuilder $builder) {
+        // Register scoped middleware for in scopes.
+        $builder->registerMiddleware('csrf', new CsrfProtectionMiddleware([
+            'httponly' => true,
+        ]));
+        $builder->connect('/ping/*', \App\Controller\Api2PingController::route());
+    });
+    $routes->scope('/api', function (RouteBuilder $builder) {
+        $builder->connect('/', \App\Controller\Api2RootController::route());
+    });
+
     $routes->setRouteClass(DashedRoute::class);
     $routes->scope('/', function (RouteBuilder $builder) {
-        /*
-         * Here, we are connecting '/' (base path) to a controller called 'Pages',
-         * its action called 'display', and we pass a param to select the view file
-         * to use (in this case, templates/Pages/home.php)...
-         */
-        $builder->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
-
-        /*
-         * ...and connect the rest of 'Pages' controller's URLs.
-         */
-        $builder->connect('/pages/*', 'Pages::display');
-
+        $builder->connect('/', \App\Controller\Api2RootController::route());
         $builder->fallbacks();
     });
 };
