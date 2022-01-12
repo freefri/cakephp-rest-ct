@@ -41,17 +41,16 @@ class LegacyI18n extends I18n
 
     public static function getPluginLocaleDir(): string
     {
-        return LEGACY_APP . 'Plugin' . DIRECTORY_SEPARATOR . getPluginNameWithCt()
-            . DIRECTORY_SEPARATOR . 'Locale' . DIRECTORY_SEPARATOR;
+        return 'fakePlugin';
     }
 
     private static function getDefaultName($name): string
     {
-        if ($name === 'default') {
-            if (is_dir(self::getPluginLocaleDir())) {
-                return Inflector::underscore(getPluginNameWithCt());
-            }
-        }
+        //if ($name === 'default') {
+        //    if (is_dir(self::getPluginLocaleDir())) {
+        //        return Inflector::underscore(getPluginNameWithCt());
+        //    }
+        //}
         return $name;
     }
 
