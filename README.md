@@ -13,8 +13,16 @@ Run from [docker-compose](https://docs.docker.com/compose/install/):
 docker-compose -f ./docker-compose-dev.yml up -d
 ```
 
-Connect as `root` to the database from docker-compose and create a new `default` db for the project
+Connect as `root` to the database launched using docker-compose (e.g. you can run exec on the container from nginx) and create a new `default` db for the project
 (check `config/app_local.php` file for the credentials)
+
+Connect to the nginx container using exec and run composer (do not run as root, but in order to set folder permissions root may be needed)
+
+```
+cd /var/www/cplatform/public/app_rest/
+su composeruser
+composer install
+```
 
 # Work with docker
 
