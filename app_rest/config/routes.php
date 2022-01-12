@@ -12,12 +12,10 @@ return static function (RouteBuilder $routes) {
         ]));
         $builder->connect('/ping/*', \App\Controller\Api2PingController::route());
     });
-    $routes->scope('/api', function (RouteBuilder $builder) {
-        $builder->connect('/', \App\Controller\Api2RootController::route());
-    });
 
     $routes->setRouteClass(DashedRoute::class);
     $routes->scope('/', function (RouteBuilder $builder) {
+        $builder->connect('/api', \App\Controller\Api2RootController::route());
         $builder->connect('/', \App\Controller\Api2RootController::route());
         $builder->fallbacks();
     });

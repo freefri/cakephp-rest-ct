@@ -33,7 +33,7 @@ class Api2RootController extends Api2Controller
         $toRet = [
             'title' => $title,
             'lang' => LegacyI18n::getLocale(),
-            'version' => $_SERVER['HTTP_HOST'],
+            'version' => '',
             '_links' => [
                 'self' => [
                     'title' => $title,
