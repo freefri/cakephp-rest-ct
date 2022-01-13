@@ -45,6 +45,8 @@ You can run [tests](https://book.cakephp.org/4/en/development/testing.html) usin
 
 But using an IDE is desirable (e.g. PhpStorm)
 
+Generate test coverage with: `/webroot/coverage/*`
+
 # Migrations
 
 Migrations should be the only way to perform changes in the database schema

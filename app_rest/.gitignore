@@ -4,6 +4,7 @@
 /logs/*
 /tmp/*
 /vendor/*
+/webroot/coverage/*
 
 # OS generated files #
 ######################
@@ -19,6 +20,7 @@ Thumbs.db
 
 # Tool specific files #
 #######################
+.github/*
 # PHPUnit
 .phpunit.result.cache
 # vim
