@@ -9,6 +9,7 @@ use App\Lib\Exception\SilentException;
 use App\Lib\I18n\LegacyI18n;
 use App\Lib\Oauth\OAuthServer;
 use App\Lib\Pdf\Renderer\PdfRenderer;
+use App\Model\Table\UsersTable;
 use Cake\Controller\Controller;
 use Cake\Datasource\ResultSetInterface;
 use Cake\Event\EventInterface;
@@ -92,8 +93,8 @@ abstract class Api2Controller extends Controller
             $this->setPublicAccess();
         }
         parent::initialize();
-        $this->loadModel('Users');
-        $this->loadModel('Events');
+        //$this->loadModel('Users');
+        //$this->loadModel('Events');
 
         ApiCorsComponent::load($this);
         if ($this->useOauthServer) {
