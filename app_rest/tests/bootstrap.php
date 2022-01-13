@@ -65,3 +65,5 @@ session_id('cli');
 // use Cake\TestSuite\SchemaLoader;
 // (new SchemaManager())->loadSqlFiles('./tests/schema.sql', 'test');
 (new Migrator())->run();
+
+$_SERVER['HTTP_HOST'] = 'dev.example.com';
