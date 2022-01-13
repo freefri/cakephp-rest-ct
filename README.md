@@ -33,7 +33,21 @@ The local path is the location of this readme file and it should be mapped to `/
 When running test use `/var/www/cplatform/public/app_rest/phpunit.xml.dist` as default configuration file.
 Also add `/var/www/cplatform/public/app_rest/vendor/autoload.php` as a default autoload file
 
+# Running commands inside docker
+
+* Connect to the container using [exec](https://docs.docker.com/engine/reference/commandline/exec/)
+* Navigate to the main path with `cd /var/www/cplatform/public/app_rest`
+* Avoid running commands as root (since it can cause permission problems), change the user with: `su composeruser`
+
+# Testing
+
+You can run [tests](https://book.cakephp.org/4/en/development/testing.html) using phpunit command: `vendor/bin/phpunit -c ./app_rest/phpunit.xml.dist`
+
+But using an IDE is desirable (e.g. PhpStorm)
+
 # Migrations
+
+Migrations should be the only way to perform changes in the database schema
 
 More info about [phinx](https://book.cakephp.org/phinx/0/en/migrations.html) and the migration plugin on [cake book](https://book.cakephp.org/migrations/3/en/index.html)
 
