@@ -8,12 +8,16 @@ use Cake\ORM\TableRegistry;
 
 class UsersTable extends AppTable
 {
-
     public static function load(): UsersTable
     {
         /** @var UsersTable $table */
         $table = TableRegistry::getTableLocator()->get('Users');
         return $table;
+    }
+
+    public function initialize(array $config): void
+    {
+        $this->addBehavior('Timestamp');
     }
 
     public function getDependentUserIDs($uID): array

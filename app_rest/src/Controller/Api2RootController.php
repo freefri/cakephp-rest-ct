@@ -3,10 +3,7 @@
 namespace App\Controller;
 
 use App\Lib\I18n\LegacyI18n;
-use App\Model\Entity\User;
 use Cake\Cache\Cache;
-use Cake\Http\Exception\BadRequestException;
-use Cake\I18n\FrozenTime;
 use Cake\Routing\Router;
 
 class Api2RootController extends Api2Controller

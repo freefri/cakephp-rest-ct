@@ -8,6 +8,7 @@ use Cake\ORM\Entity;
  * @property string firstname
  * @property string lastname
  * @property string email
+ * @property mixed group_id
  */
 class User extends Entity
 {

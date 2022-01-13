@@ -50,7 +50,7 @@ class CreateUsers extends AbstractMigration
         ]);
         $table->addColumn('deleted', 'datetime', [
             'default' => null,
-            'null' => false,
+            'null' => true,
         ]);
         $table->addIndex(['email'], ['unique' => true]);
         $table->addIndex(['group_id']);
