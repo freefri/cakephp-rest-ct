@@ -16,12 +16,7 @@ class Api2RootController extends Api2Controller
         return true;
     }
 
-    public function initialize(): void
-    {
-        parent::initialize();
-    }
-
-    protected function getMandatoryParams()
+    protected function getMandatoryParams(): array
     {
         return [];
     }

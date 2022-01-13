@@ -39,8 +39,6 @@ abstract class Api2Controller extends Controller
     private $_localOauth = null;
     private static $_hasSwagger = [];
 
-    public $groupRestriction = false;
-
     protected $return;
     protected $flatResponse = false;
     protected $useOauthServer = true;
@@ -68,7 +66,7 @@ abstract class Api2Controller extends Controller
         return [];
     }
 
-    abstract protected function getMandatoryParams();
+    abstract protected function getMandatoryParams(): array;
 
     protected function setPublicAccess()
     {
