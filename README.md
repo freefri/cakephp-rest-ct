@@ -32,3 +32,16 @@ The local path is the location of this readme file and it should be mapped to `/
 
 When running test use `/var/www/cplatform/public/app_rest/phpunit.xml.dist` as default configuration file.
 Also add `/var/www/cplatform/public/app_rest/vendor/autoload.php` as a default autoload file
+
+# Migrations
+
+More info about [phinx](https://book.cakephp.org/phinx/0/en/migrations.html) and the migration plugin on [cake book](https://book.cakephp.org/migrations/3/en/index.html)
+
+```
+# create a new migration called 'CreateUsers'
+bin/cake bake migration CreateUsers
+# execute the migration on the db
+bin/cake migrations migrate
+# revert the migration on the db
+bin/cake migrations rollback
+```
