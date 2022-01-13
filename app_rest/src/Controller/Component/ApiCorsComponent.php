@@ -26,7 +26,7 @@ class ApiCorsComponent extends Component
 
             $responseBuilder = $response->cors($controller->getRequest());
 
-            $allowedCors = Configure::read('Platform.Cors.AllowOrigin');
+            $allowedCors = Configure::read('App.Cors.AllowOrigin');
             $currentOrigin = $_SERVER['HTTP_ORIGIN'] ?? '';
             if ($currentOrigin && in_array($currentOrigin, $allowedCors)) {
                 $responseBuilder->allowOrigin([$currentOrigin])

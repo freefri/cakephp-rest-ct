@@ -1,9 +1,9 @@
 <?php
 
-use Cake\Cache\Engine\FileEngine;
+use App\Lib\Consts\CacheGrp;
+use Cake\Cache\Engine\MemcachedEngine;
 use Cake\Database\Connection;
 use Cake\Database\Driver\Mysql;
-use Cake\Error\ExceptionRenderer;
 use Cake\Log\Engine\FileLog;
 use Cake\Mailer\Transport\MailTransport;
 
@@ -66,6 +66,12 @@ return [
             'templates' => [ROOT . DS . 'templates' . DS],
             'locales' => [RESOURCES . 'locales' . DS],
         ],
+        'Cors' => [
+            'AllowOrigin' => [
+                'http://localhost:8080',
+                'http://localhost:8081',
+            ],
+        ]
     ],
 
     /*
@@ -96,10 +102,17 @@ return [
      * Configure the cache adapters.
      */
     'Cache' => [
-        'default' => [
-            'className' => FileEngine::class,
+        CacheGrp::DEFAULT => [
+            'className' => MemcachedEngine::class,
             'path' => CACHE,
+            'duration' => '+1 day',
             'url' => env('CACHE_DEFAULT_URL', null),
+        ],
+        CacheGrp::EXTRALONG => [
+            'className' => MemcachedEngine::class,
+            'duration' => '+1 day',
+            'path' => CACHE,
+            'url' => env('CACHE_EXTRALONG_URL', null),
         ],
 
         /*
@@ -108,8 +121,8 @@ return [
          * Duration will be set to '+2 minutes' in bootstrap.php when debug = true
          * If you set 'className' => 'Null' core cache will be disabled.
          */
-        '_cake_core_' => [
-            'className' => FileEngine::class,
+        CacheGrp::CORE => [
+            'className' => MemcachedEngine::class,
             'prefix' => 'myapp_cake_core_',
             'path' => CACHE . 'persistent' . DS,
             'serialize' => true,
@@ -123,8 +136,8 @@ return [
          * in connections.
          * Duration will be set to '+2 minutes' in bootstrap.php when debug = true
          */
-        '_cake_model_' => [
-            'className' => FileEngine::class,
+        CacheGrp::MODEL => [
+            'className' => MemcachedEngine::class,
             'prefix' => 'myapp_cake_model_',
             'path' => CACHE . 'models' . DS,
             'serialize' => true,
@@ -137,8 +150,8 @@ return [
          * first time the routes are processed through `config/routes.php`.
          * Duration will be set to '+2 seconds' in bootstrap.php when debug = true
          */
-        '_cake_routes_' => [
-            'className' => FileEngine::class,
+        CacheGrp::ROUTES => [
+            'className' => MemcachedEngine::class,
             'prefix' => 'myapp_cake_routes_',
             'path' => CACHE,
             'serialize' => true,

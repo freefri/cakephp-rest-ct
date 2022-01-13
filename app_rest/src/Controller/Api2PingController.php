@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Lib\Consts\CacheGrp;
 use App\Lib\I18n\LegacyI18n;
 use Cake\Cache\Cache;
 use Cake\Http\Exception\BadRequestException;
@@ -29,12 +30,18 @@ class Api2PingController extends Api2Controller
         if ($id != self::SECRET) {
             throw new BadRequestException('Invalid ping');
         }
-        Cache::write('testingCachePing', 'hello-cache-ping');
+        Cache::write('testingCachePing', 'hello-cache-ping', CacheGrp::DEFAULT);
+        if (Cache::read('testingCachePing') == 'hello-cache-ping') {
+            $cache = 'use cache';
+        } else {
+            $cache = 'errorCache';
+        }
         $toRet = [
             '0' => LegacyI18n::getLocale(),
-            '1' => $_SERVER['HTTP_HOST'],
-            '2' => $_SERVER['APPLICATION_ENV'],
-            '3' => new FrozenTime(),
+            '1' => env('HTTP_HOST', ''),
+            '2' => env('APPLICATION_ENV', ''),
+            '3' => $cache,
+            '4' => new FrozenTime(),
         ];
         $this->return = $toRet;
     }

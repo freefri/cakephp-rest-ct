@@ -20,6 +20,8 @@ declare(strict_types=1);
  */
 require __DIR__ . DIRECTORY_SEPARATOR . 'paths.php';
 
+$_SERVER['CACHE_DEFAULT_URL'] = 'memcached://memcached';
+
 /*
  * Bootstrap CakePHP.
  *
