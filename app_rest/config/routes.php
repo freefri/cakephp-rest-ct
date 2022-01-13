@@ -11,6 +11,7 @@ return static function (RouteBuilder $routes) {
             'httponly' => true,
         ]));
         $builder->connect('/ping/*', \App\Controller\Api2PingController::route());
+        $builder->connect('/users/*', \App\Controller\Api2UsersController::route());
     });
 
     $routes->setRouteClass(DashedRoute::class);

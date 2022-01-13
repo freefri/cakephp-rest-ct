@@ -26,4 +26,8 @@ class User extends Entity
         'firstname' => true,
         'lastname' => true,
     ];
+
+    protected $_hidden = [
+        'deleted'
+    ];
 }
