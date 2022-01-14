@@ -41,11 +41,11 @@ Also add `/var/www/cplatform/public/app_rest/vendor/autoload.php` as a default a
 
 # Testing
 
-You can run [tests](https://book.cakephp.org/4/en/development/testing.html) using phpunit command: `vendor/bin/phpunit -c ./app_rest/phpunit.xml.dist`
+You can run [tests](https://book.cakephp.org/4/en/development/testing.html) using phpunit command: `vendor/bin/phpunit -c ../app_rest/phpunit.xml.dist`
 
-But using an IDE is desirable (e.g. PhpStorm)
+But using an **IDE** is desirable (e.g. PhpStorm)
 
-Generate test coverage with: `/webroot/coverage/*`
+Generate test coverage with: `vendor/bin/phpunit --coverage-html ./webroot/coverage/*`
 
 # Migrations
 
