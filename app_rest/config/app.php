@@ -104,15 +104,17 @@ return [
     'Cache' => [
         CacheGrp::DEFAULT => [
             'className' => MemcachedEngine::class,
+            'prefix' => '_' . CacheGrp::DEFAULT . '_',
             'path' => CACHE,
             'duration' => '+1 day',
             'url' => env('CACHE_DEFAULT_URL', null),
         ],
         CacheGrp::EXTRALONG => [
             'className' => MemcachedEngine::class,
+            'prefix' => '_' . CacheGrp::EXTRALONG . '_',
             'duration' => '+1 day',
             'path' => CACHE,
-            'url' => env('CACHE_EXTRALONG_URL', null),
+            'url' => env('CACHE_DEFAULT_URL', null),
         ],
 
         /*
@@ -125,9 +127,8 @@ return [
             'className' => MemcachedEngine::class,
             'prefix' => 'myapp_cake_core_',
             'path' => CACHE . 'persistent' . DS,
-            'serialize' => true,
             'duration' => '+1 years',
-            'url' => env('CACHE_CAKECORE_URL', null),
+            'url' => env('CACHE_DEFAULT_URL', null),
         ],
 
         /*
@@ -140,9 +141,8 @@ return [
             'className' => MemcachedEngine::class,
             'prefix' => 'myapp_cake_model_',
             'path' => CACHE . 'models' . DS,
-            'serialize' => true,
             'duration' => '+1 years',
-            'url' => env('CACHE_CAKEMODEL_URL', null),
+            'url' => env('CACHE_DEFAULT_URL', null),
         ],
 
         /*
@@ -154,9 +154,8 @@ return [
             'className' => MemcachedEngine::class,
             'prefix' => 'myapp_cake_routes_',
             'path' => CACHE,
-            'serialize' => true,
             'duration' => '+1 years',
-            'url' => env('CACHE_CAKEROUTES_URL', null),
+            'url' => env('CACHE_DEFAULT_URL', null),
         ],
     ],
 
