@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
+use App\Model\Table\UsersTable;
+
 class Api2UsersControllerTest extends Api2CommonErrorsTest
 {
     protected $fixtures = [
@@ -32,6 +34,6 @@ class Api2UsersControllerTest extends Api2CommonErrorsTest
         $this->assertEquals('test@example.com', $return['email']);
         $this->assertEquals('Alex', $return['firstname']);
         $this->assertEquals('Gomez', $return['lastname']);
-        $this->assertEquals('passpass', $return['password']);
+        $this->assertStringStartsWith('$2y$10$', $return['password']);
     }
 }
