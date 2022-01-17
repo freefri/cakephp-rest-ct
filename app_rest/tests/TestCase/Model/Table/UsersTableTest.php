@@ -4,6 +4,9 @@ namespace App\Test\TestCase\View\Helper;
 use App\Lib\Consts\CacheGrp;
 use App\Model\Table\UsersTable;
 use Cake\Cache\Cache;
+use Cake\Datasource\Exception\RecordNotFoundException;
+use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Exception\UnauthorizedException;
 use Cake\TestSuite\Fixture\FixtureStrategyInterface;
 use Cake\TestSuite\Fixture\TransactionStrategy;
 use Cake\TestSuite\TestCase;
@@ -34,5 +37,47 @@ class UsersTableTest extends TestCase
 
         $this->assertEquals($group_id, $this->Users->get($uid)->group_id, 'wrong get()');
         $this->assertEquals($group_id, $this->Users->getUserGroup($uid), 'wrong getUserGroup()');
+    }
+
+    public function testCheckLogin_withEmptyArray(): void
+    {
+        $this->expectException(BadRequestException::class);
+        $this->expectExceptionMessage('Email is required');
+        $this->Users->checkLogin([]);
+    }
+
+    public function testCheckLogin_withoutPassword(): void
+    {
+        $this->expectException(BadRequestException::class);
+        $this->expectExceptionMessage('Password is required');
+        $this->Users->checkLogin(['email' => 'fake']);
+    }
+
+    public function testCheckLogin_withNonExistingEmail(): void
+    {
+        $this->expectException(UnauthorizedException::class);
+        $this->expectExceptionMessage('User not found');
+        $this->Users->checkLogin(['email' => 'fake', 'password' => 'f']);
+    }
+
+    public function testCheckLogin_withWrongPassword(): void
+    {
+        $this->expectException(UnauthorizedException::class);
+        $this->expectExceptionMessage('Invalid password');
+        $data = [
+            'email' => 'test@example.com',
+            'password' => 'invalidpass',
+        ];
+        $this->Users->checkLogin($data);
+    }
+
+    public function testCheckLogin(): void
+    {
+        $data = [
+            'email' => 'test@example.com',
+            'password' => 'passpass',
+        ];
+        $res = $this->Users->checkLogin($data);
+        $this->assertEquals($data['email'], $res->email);
     }
 }
