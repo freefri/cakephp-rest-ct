@@ -2,6 +2,7 @@
 
 namespace App\Model\Entity;
 
+use Cake\Auth\DefaultPasswordHasher;
 use Cake\ORM\Entity;
 
 /**
@@ -9,6 +10,7 @@ use Cake\ORM\Entity;
  * @property string lastname
  * @property string email
  * @property mixed group_id
+ * @property mixed $password
  */
 class User extends Entity
 {
@@ -30,4 +32,11 @@ class User extends Entity
     protected $_hidden = [
         'deleted'
     ];
+
+    protected function _setPassword($password)
+    {
+        if (strlen($password) > 0) {
+            return (new DefaultPasswordHasher)->hash($password);
+        }
+    }
 }
