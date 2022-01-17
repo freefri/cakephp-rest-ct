@@ -25,8 +25,9 @@ abstract class Api2CommonErrorsTest extends TestCase
 
     abstract protected function _getEndpoint() : string;
 
-    public function setup(): void
+    public function setUp(): void
     {
+        parent::setUp();
         if (!$this->currentAccessToken) {
             $this->currentAccessToken = self::ACCESS_TOKEN_SELLER;
         }
