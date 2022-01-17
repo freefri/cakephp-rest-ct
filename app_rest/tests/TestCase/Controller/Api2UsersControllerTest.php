@@ -27,10 +27,11 @@ class Api2UsersControllerTest extends Api2CommonErrorsTest
         $this->post($this->_getEndpoint(), $data);
 
         $this->assertResponseOk($this->_getBodyAsString());
+        $return = json_decode($this->_getBodyAsString(), true)['data'];
 
-        $this->assertEquals('test@example.com', $data['email']);
-        $this->assertEquals('Alex', $data['firstname']);
-        $this->assertEquals('Gomez', $data['lastname']);
-        $this->assertEquals('passpass', $data['password']);
+        $this->assertEquals('test@example.com', $return['email']);
+        $this->assertEquals('Alex', $return['firstname']);
+        $this->assertEquals('Gomez', $return['lastname']);
+        $this->assertEquals('passpass', $return['password']);
     }
 }
