@@ -47,6 +47,7 @@ abstract class Api2CommonErrorsTest extends TestCase
 
     public function tearDown(): void
     {
+        parent::tearDown();
         unset($_SERVER['HTTP_ORIGIN']);
     }
 
