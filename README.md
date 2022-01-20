@@ -6,6 +6,10 @@
 
 A skeleton for creating applications with [CakePHP](https://cakephp.org) 4.x.
 
+# License
+
+All code is licensed under MIT License
+
 # Serve
 Run from [docker-compose](https://docs.docker.com/compose/install/):
 
@@ -56,8 +60,11 @@ More info about [phinx](https://book.cakephp.org/phinx/0/en/migrations.html) and
 ```
 # create a new migration called 'CreateUsers'
 bin/cake bake migration CreateUsers
+
 # execute the migration on the db
 bin/cake migrations migrate
+
 # revert the migration on the db
 bin/cake migrations rollback
+
 ```
