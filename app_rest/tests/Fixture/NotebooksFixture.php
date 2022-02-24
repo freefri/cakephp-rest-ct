@@ -7,6 +7,8 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 class NotebooksFixture extends TestFixture
 {
+    const LOAD = 'app.Notebooks';
+
     public $records = [
         [
             'id' => 1,

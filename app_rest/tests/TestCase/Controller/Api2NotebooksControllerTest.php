@@ -6,13 +6,16 @@ namespace App\Test\TestCase\Controller;
 
 use App\Lib\Consts\NotebookShapes;
 use App\Model\Table\NotebooksTable;
+use App\Test\Fixture\NotebooksFixture;
+use App\Test\Fixture\OauthAccessTokensFixture;
 
 class Api2NotebooksControllerTest extends Api2CommonErrorsTest
 {
     public const USERID = 1;
 
     protected $fixtures = [
-        'app.Notebooks'
+        NotebooksFixture::LOAD,
+        OauthAccessTokensFixture::LOAD,
     ];
 
     protected function _getEndpoint(): string
@@ -45,6 +48,7 @@ class Api2NotebooksControllerTest extends Api2CommonErrorsTest
 
     public function testGetNotebook1_ById()
     {
+        $this->currentAccessToken = OauthAccessTokensFixture::ACCESS_TOKEN_SELLER;
         $expectedData = [
             'id' => 1,
             'user_id' => 1,
@@ -55,7 +59,7 @@ class Api2NotebooksControllerTest extends Api2CommonErrorsTest
         ];
 
         $this->get($this->_getEndpoint().'1');
-        $this->assertResponseOk($this->_getBodyAsString());
+        $this->assertJsonResponseOK(); // TODO not commit
         $return = json_decode($this->_getBodyAsString(), true)['data'];;
         $this->assertEquals($expectedData, $return);
     }

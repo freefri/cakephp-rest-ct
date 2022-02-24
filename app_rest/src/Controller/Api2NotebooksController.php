@@ -18,7 +18,7 @@ class Api2NotebooksController extends Api2Controller
 
     public function isPublicController(): bool
     {
-        return true;
+        return false;
     }
 
     protected function getMandatoryParams(): array
