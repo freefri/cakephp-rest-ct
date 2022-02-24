@@ -14,7 +14,7 @@ class CacheGrp
     //const LONG = 'long';
     //const SESSION = 'session';
     //const REINDEX = 'reindex';
-    //const ACL = 'acl';
+    const ACL = 'acl';
     //const CITIES = 'cities';
     const EXTRALONG = 'extralong';
     const CORE = '_cake_core_';

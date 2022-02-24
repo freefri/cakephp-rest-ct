@@ -6,11 +6,13 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 class UsersFixture extends TestFixture
 {
+    const LOAD = 'app.Users';
+    const SELLER_ID = 2;
 
     public $records = [
         [
-            'id' => 1,
-            'email' => 'test@example.com',
+            'id' => self::SELLER_ID,
+            'email' => 'seller@example.com',
             'firstname' => 'My Name',
             'lastname' => 'My Surname',
             'password' => '$2y$10$1cCayk8qquFFWyvk161qZuOm4kgLFbmg4O1ItVQ5Qt.w3V28VNUk2',

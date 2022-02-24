@@ -116,6 +116,13 @@ return [
             'path' => CACHE,
             'url' => env('CACHE_DEFAULT_URL', null),
         ],
+        CacheGrp::ACL => [
+            'className' => MemcachedEngine::class,
+            'prefix' => '_' . CacheGrp::ACL . '_',
+            'duration' => '+1 day',
+            'path' => CACHE,
+            'url' => env('CACHE_DEFAULT_URL', null),
+        ],
 
         /*
          * Configure the cache used for general framework caching.

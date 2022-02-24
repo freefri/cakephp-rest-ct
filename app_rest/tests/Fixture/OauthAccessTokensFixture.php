@@ -7,7 +7,7 @@ use Cake\TestSuite\Fixture\TestFixture;
 class OauthAccessTokensFixture extends TestFixture
 {
     const LOAD = 'app.OauthAccessTokens';
-    const ACCESS_TOKEN_SELLER = '555ca191ca768883333c916a0c05bc72bdbbc88';
+    const ACCESS_TOKEN_SELLER = '555ca191ca768883333c916a0c05bc72bdbbc89';
 
     public $records = [];
 

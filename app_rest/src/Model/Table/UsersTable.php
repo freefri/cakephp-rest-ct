@@ -46,9 +46,9 @@ class UsersTable extends AppTable
 
     public function checkLogin(array $data)
     {
-        $email = $data['email'] ?? '';
+        $email = $data['username'] ?? '';
         if (!$email) {
-            throw new BadRequestException('Email is required');
+            throw new BadRequestException('Username is required');
         }
         $pass = $data['password'] ?? '';
         if (!$pass) {
@@ -59,7 +59,7 @@ class UsersTable extends AppTable
             ->where(['email' => $email])
             ->first();
         if (!$usr) {
-            throw new UnauthorizedException('User not found');
+            throw new UnauthorizedException('User not found ' . $email);
         }
         if (!(new DefaultPasswordHasher)->check($pass, $usr->password)) {
             throw new UnauthorizedException('Invalid password');
