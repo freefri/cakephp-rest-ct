@@ -4,13 +4,13 @@ declare(strict_types=1);
 namespace App\Lib\Oauth;
 
 use App\Lib\Exception\SilentException;
-use App\Lib\I18n\LegacyI18n;
 use App\Model\Table\OauthAccessTokensTable;
 use App\Model\Table\UsersTable;
 use Cake\Controller\Controller;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\InternalErrorException;
+use Cake\I18n\FrozenTime;
 use Cake\Log\LogTrait;
 use Cake\ORM\TableRegistry;
 use OAuth2\Autoloader;
@@ -24,8 +24,6 @@ use OAuth2\Server;
 class OAuthServer
 {
     use LogTrait;
-
-    const DASHBOARD_CLI = 1234;
 
     /** @var Server */
     public $server;
@@ -180,7 +178,7 @@ class OAuthServer
         // instantiate the oauth server
         $this->server = new Server($this->_storage, $this->_serverConfig, $grantTypes);
         $tokenType = $this->request->headers('X_CT_TOKEN', false);
-        if (strtolower($tokenType) == 'jwt') {
+        if ($tokenType && strtolower($tokenType) == 'jwt') {
             $this->setUseJWT();
         }
     }
@@ -190,18 +188,52 @@ class OAuthServer
         $this->server->setConfig('use_jwt_access_tokens', $use);
     }
 
-    /*
     public function getAccessTokenParams($uid, $clientId = null)
     {
         $time = new FrozenTime();
-        $authToken = $this->getAuthorizationTokenWithoutResponse($uid, $clientId);
-        $response = $this->getAccessTokenForDashboard($authToken, $uid, $clientId);
-        $response = OAuthServerComponent::convert302to200($response);
+        $authToken = $this->_getAuthorizationTokenWithoutResponse($uid, $clientId);
+        $response = $this->_getAccessTokenForDashboard($authToken, $uid, $clientId);
+        $response = self::_convert302to200($response);
+        $params = $response->getParameters();
         $expiresIn = $this->response->getParameter('expires_in');
         $params['expires_at'] = $time->addSeconds($expiresIn ?? 0);
         return $params;
     }
-    */
+
+    private static function _convert302to200(\OAuth2\Response $response)
+    {
+        if ($response->getStatusCode() === 302) {
+            $headers = $response->getHttpHeaders();
+            $location = ($headers['Location'] ?? '');
+            if (substr($location, 0, 2) == '/#') {
+                $params = [];
+                parse_str(substr($location, 2), $params);
+                return new \OAuth2\Response($params, 200);
+            }
+        }
+        return $response;
+    }
+
+    private function _getAuthorizationTokenWithoutResponse($uid, $clientId = null)
+    {
+        $response = $this->getAuthorizationToken($uid, $clientId);
+        if ($response->getStatusCode() != 302 || !$response->getHttpHeader('Location')) {
+            throw new BadRequestException(
+                ($response->getParameters()['error'] ?? 'Error with access token'),
+                $response->getStatusCode()
+            );
+        }
+        parse_str(parse_url($response->getHttpHeader('Location'))['query'], $params);
+        return $params['code'];
+    }
+
+    private function _getAccessTokenForDashboard($authToken, $uid, $clientId)
+    {
+        $responseType = AuthorizeControllerInterface::RESPONSE_TYPE_ACCESS_TOKEN;
+        $this->request->query['access_token'] = $authToken;
+        $this->request->query['user_id'] = $uid;
+        return $this->_getAuthorizedAccessToken($clientId, $responseType, true, $uid);
+    }
 
     public function getCurrentAccessToken()
     {
@@ -246,11 +278,11 @@ class OAuthServer
         return $this->response;
     }
 
-    public function getAuthorizationToken($uid, $clientId = null)
+    public function getAuthorizationToken($uid, $clientId)
     {
         $type = AuthorizeControllerInterface::RESPONSE_TYPE_AUTHORIZATION_CODE;
-        if (!$clientId) {
-            $clientId = self::DASHBOARD_CLI;
+        if (!$this->request) {
+            throw new InternalErrorException('setupOauth() is required');
         }
         $this->request->query['client_id'] = $clientId;
         $this->request->query['redirect_uri'] = '/';

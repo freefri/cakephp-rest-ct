@@ -4,7 +4,12 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Lib\Consts\CacheGrp;
+use App\Test\Fixture\OauthAccessTokensFixture;
+use App\Test\Fixture\UsersFixture;
 use Cake\Cache\Cache;
+use Cake\Error\Debugger;
+use Cake\TestSuite\Fixture\FixtureStrategyInterface;
+use Cake\TestSuite\Fixture\TransactionStrategy;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -12,10 +17,12 @@ abstract class Api2CommonErrorsTest extends TestCase
 {
     use IntegrationTestTrait;
 
-    const ACCESS_TOKEN_SELLER = '555ca191ca768883333c916a0c05bc72bdbbc99';
-    const SELLER_ID = '50';
-
     protected $currentAccessToken = null;
+
+    protected function getFixtureStrategy(): FixtureStrategyInterface
+    {
+        return new TransactionStrategy();
+    }
 
     protected function clearUserCache()
     {
@@ -29,7 +36,7 @@ abstract class Api2CommonErrorsTest extends TestCase
     {
         parent::setUp();
         if (!$this->currentAccessToken) {
-            $this->currentAccessToken = self::ACCESS_TOKEN_SELLER;
+            $this->currentAccessToken = OauthAccessTokensFixture::ACCESS_TOKEN_SELLER;
         }
         $_SERVER['HTTP_ORIGIN'] = 'http://dev.example.com';
         $this->loadAuthToken($this->currentAccessToken);
@@ -51,11 +58,14 @@ abstract class Api2CommonErrorsTest extends TestCase
         unset($_SERVER['HTTP_ORIGIN']);
     }
 
-    protected function assertJsonResponseOK(): array
+    protected function assertJsonResponseOK(string $message = ''): array
     {
-        $body = (string)$this->_response->getBody();
+        $body = $this->_getBodyAsString();
         $bodyDecoded = json_decode($body, true);
-        $this->assertResponseOk($body);
+        if (!$message) {
+            $message = 'Error assertJsonResponseOK:';
+        }
+        $this->assertResponseOk($message . ' ' . Debugger::exportVar($bodyDecoded));
         return $bodyDecoded;
     }
 
@@ -94,12 +104,12 @@ abstract class Api2CommonErrorsTest extends TestCase
 
     public function testPut_shouldThrowBadRequestExceptionWhenNoBodyProvided()
     {
-        $this->actionExpectsException(self::SELLER_ID, 'put', 'Empty body or invalid Content-Type in HTTP request');
+        $this->actionExpectsException(UsersFixture::SELLER_ID, 'put', 'Empty body or invalid Content-Type in HTTP request');
     }
 
     public function testPatch_shouldThrowBadRequestExceptionWhenNoBodyProvided()
     {
-        $this->actionExpectsException(self::SELLER_ID, 'patch', 'Empty body or invalid Content-Type in HTTP request');
+        $this->actionExpectsException(UsersFixture::SELLER_ID, 'patch', 'Empty body or invalid Content-Type in HTTP request');
     }
 
     protected function actionExpectsException($url, $method, $message)

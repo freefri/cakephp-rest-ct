@@ -2,9 +2,11 @@
 
 namespace App\Model\Table;
 
+use App\Lib\Consts\CacheGrp;
 use App\Model\Entity\OauthAccessToken;
 use Cake\Cache\Cache;
 use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Exception\InternalErrorException;
 use Cake\Http\Exception\NotImplementedException;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
@@ -18,7 +20,7 @@ class OauthAccessTokensTable extends AppTable implements
     PublicKeyInterface, ClientCredentialsInterface, AccessTokenInterface,
     AuthorizationCodeInterface, UserCredentialsInterface
 {
-    const CACHE_GROUP = 'acl';
+    const CACHE_GROUP = CacheGrp::ACL;
 
     public function initialize(array $config): void
     {
@@ -134,6 +136,11 @@ class OauthAccessTokensTable extends AppTable implements
     public function expireAccessToken(string $token)
     {
         Cache::delete($this->_getAccessTokenCacheKey($token), self::CACHE_GROUP);
+        $res = $this->updateAll(['expires' => new FrozenTime()], ['access_token' => $token]);
+        if (!$res) {
+            throw new InternalErrorException('Error deleting token');
+        }
+        return $res;
     }
 
     public function getAccessToken($oauth_token)

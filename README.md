@@ -67,4 +67,12 @@ bin/cake migrations migrate
 # revert the migration on the db
 bin/cake migrations rollback
 
+# create new seeds
+bin/cake bake seed Users
+
+# run seeder
+bin/cake migrations seed
+
+# run specific seeder class
+bin/cake migrations seed --seed UsersSeed
 ```
