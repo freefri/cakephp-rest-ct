@@ -30,7 +30,8 @@ class User extends Entity
     ];
 
     protected $_hidden = [
-        'deleted'
+        'deleted',
+        'password',
     ];
 
     protected function _setPassword($password)

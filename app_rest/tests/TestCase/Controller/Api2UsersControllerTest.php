@@ -34,6 +34,6 @@ class Api2UsersControllerTest extends Api2CommonErrorsTest
         $this->assertEquals($data['email'], $return['email']);
         $this->assertEquals($data['firstname'], $return['firstname']);
         $this->assertEquals($data['lastname'], $return['lastname']);
-        $this->assertStringStartsWith('$2y$10$', $return['password']);
+        $this->assertArrayNotHasKey('password', $return);
     }
 }
