@@ -3,8 +3,8 @@ namespace App\Test\TestCase\View\Helper;
 
 use App\Lib\Consts\CacheGrp;
 use App\Model\Table\UsersTable;
+use App\Test\Fixture\UsersFixture;
 use Cake\Cache\Cache;
-use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\UnauthorizedException;
 use Cake\TestSuite\Fixture\FixtureStrategyInterface;
@@ -13,7 +13,9 @@ use Cake\TestSuite\TestCase;
 
 class UsersTableTest extends TestCase
 {
-    protected $fixtures = ['app.Users'];
+    protected $fixtures = [
+        UsersFixture::LOAD
+    ];
 
     protected function getFixtureStrategy(): FixtureStrategyInterface
     {
@@ -31,7 +33,7 @@ class UsersTableTest extends TestCase
         $query = $this->Users->find();
         $this->assertInstanceOf('Cake\ORM\Query', $query);
         $this->assertNotEmpty($query->all()->toArray(), 'returns not empty');
-        $uid = 1;
+        $uid = UsersFixture::SELLER_ID;
         $group_id = 3;
         Cache::delete('_getFirst' . $uid, CacheGrp::EXTRALONG);
 
@@ -42,7 +44,7 @@ class UsersTableTest extends TestCase
     public function testCheckLogin_withEmptyArray(): void
     {
         $this->expectException(BadRequestException::class);
-        $this->expectExceptionMessage('Email is required');
+        $this->expectExceptionMessage('Username is required');
         $this->Users->checkLogin([]);
     }
 
@@ -50,14 +52,14 @@ class UsersTableTest extends TestCase
     {
         $this->expectException(BadRequestException::class);
         $this->expectExceptionMessage('Password is required');
-        $this->Users->checkLogin(['email' => 'fake']);
+        $this->Users->checkLogin(['username' => 'fake']);
     }
 
     public function testCheckLogin_withNonExistingEmail(): void
     {
         $this->expectException(UnauthorizedException::class);
         $this->expectExceptionMessage('User not found');
-        $this->Users->checkLogin(['email' => 'fake', 'password' => 'f']);
+        $this->Users->checkLogin(['username' => 'fake', 'password' => 'f']);
     }
 
     public function testCheckLogin_withWrongPassword(): void
@@ -65,7 +67,7 @@ class UsersTableTest extends TestCase
         $this->expectException(UnauthorizedException::class);
         $this->expectExceptionMessage('Invalid password');
         $data = [
-            'email' => 'test@example.com',
+            'username' => 'seller@example.com',
             'password' => 'invalidpass',
         ];
         $this->Users->checkLogin($data);
@@ -74,10 +76,10 @@ class UsersTableTest extends TestCase
     public function testCheckLogin(): void
     {
         $data = [
-            'email' => 'test@example.com',
+            'username' => 'seller@example.com',
             'password' => 'passpass',
         ];
         $res = $this->Users->checkLogin($data);
-        $this->assertEquals($data['email'], $res->email);
+        $this->assertEquals($data['username'], $res->email);
     }
 }

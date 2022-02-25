@@ -30,7 +30,7 @@ class Api2AuthenticationControllerTest extends Api2CommonErrorsTest
     public function testAddNew_login()
     {
         $data = [
-            'username' => 'test@example.com',
+            'username' => 'seller@example.com',
             'password' => 'passpass',
             'client_id' => OauthClientsFixture::DASHBOARD_CLI,
             'grant_type' => 'password',
@@ -44,14 +44,14 @@ class Api2AuthenticationControllerTest extends Api2CommonErrorsTest
         $this->assertArrayHasKey('access_token', $return);
         $this->assertEquals('7206', $return['expires_in'], 'expires in seconds');
         $this->assertEquals('Bearer', $return['token_type']);
-        $this->assertEquals(1, $return['user']['id']);
-        $this->assertEquals('test@example.com', $return['user']['email']);
+        $this->assertEquals(UsersFixture::SELLER_ID, $return['user']['id']);
+        $this->assertEquals('seller@example.com', $return['user']['email']);
     }
 
     public function testAddNew_loginShouldRememberMe()
     {
         $data = [
-            'username' => 'test@example.com',
+            'username' => 'seller@example.com',
             'password' => 'passpass',
             'client_id' => OauthClientsFixture::DASHBOARD_CLI,
             'grant_type' => 'password',
@@ -66,14 +66,14 @@ class Api2AuthenticationControllerTest extends Api2CommonErrorsTest
         $this->assertArrayHasKey('access_token', $return);
         $this->assertEquals('172806', $return['expires_in'], 'expires in seconds');
         $this->assertEquals('Bearer', $return['token_type']);
-        $this->assertEquals(1, $return['user']['id']);
-        $this->assertEquals('test@example.com', $return['user']['email']);
+        $this->assertEquals(UsersFixture::SELLER_ID, $return['user']['id']);
+        $this->assertEquals('seller@example.com', $return['user']['email']);
     }
 
     public function testAddNew_loginShouldThrowWithoutGrantType()
     {
         $data = [
-            'username' => 'test@example.com',
+            'username' => 'seller@example.com',
             'password' => 'passpass',
             'client_id' => OauthClientsFixture::DASHBOARD_CLI,
         ];

@@ -21,8 +21,8 @@ class Api2UsersControllerTest extends Api2CommonErrorsTest
     {
         $data = [
             'email'=> 'test@example.com',
-            'firstname'=> 'Alex',
-            'lastname'=> 'Gomez',
+            'firstname'=> 'Test',
+            'lastname'=> 'Last',
             'password'=> 'passpass'
         ];
 
@@ -31,9 +31,9 @@ class Api2UsersControllerTest extends Api2CommonErrorsTest
         $this->assertResponseOk($this->_getBodyAsString());
         $return = json_decode($this->_getBodyAsString(), true)['data'];
 
-        $this->assertEquals('test@example.com', $return['email']);
-        $this->assertEquals('Alex', $return['firstname']);
-        $this->assertEquals('Gomez', $return['lastname']);
+        $this->assertEquals($data['email'], $return['email']);
+        $this->assertEquals($data['firstname'], $return['firstname']);
+        $this->assertEquals($data['lastname'], $return['lastname']);
         $this->assertStringStartsWith('$2y$10$', $return['password']);
     }
 }
