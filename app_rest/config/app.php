@@ -70,6 +70,7 @@ return [
             'AllowOrigin' => [
                 'http://localhost:8080',
                 'http://localhost:8081',
+                'http://localhost:8083',
             ],
         ]
     ],
@@ -104,21 +105,21 @@ return [
     'Cache' => [
         CacheGrp::DEFAULT => [
             'className' => MemcachedEngine::class,
-            'prefix' => '_' . CacheGrp::DEFAULT . '_',
+            'prefix' => env('TAG_VERSION', '') . '_' . CacheGrp::DEFAULT . '_',
             'path' => CACHE,
             'duration' => '+1 day',
             'url' => env('CACHE_DEFAULT_URL', null),
         ],
         CacheGrp::EXTRALONG => [
             'className' => MemcachedEngine::class,
-            'prefix' => '_' . CacheGrp::EXTRALONG . '_',
+            'prefix' => env('TAG_VERSION', ''). '_' . CacheGrp::EXTRALONG . '_',
             'duration' => '+1 day',
             'path' => CACHE,
             'url' => env('CACHE_DEFAULT_URL', null),
         ],
         CacheGrp::ACL => [
             'className' => MemcachedEngine::class,
-            'prefix' => '_' . CacheGrp::ACL . '_',
+            'prefix' => env('TAG_VERSION', ''). '_' . CacheGrp::ACL . '_',
             'duration' => '+1 day',
             'path' => CACHE,
             'url' => env('CACHE_DEFAULT_URL', null),
@@ -132,7 +133,7 @@ return [
          */
         CacheGrp::CORE => [
             'className' => MemcachedEngine::class,
-            'prefix' => 'myapp_cake_core_',
+            'prefix' => env('TAG_VERSION', '') . '_myapp_cake_core_',
             'path' => CACHE . 'persistent' . DS,
             'duration' => '+1 years',
             'url' => env('CACHE_DEFAULT_URL', null),
@@ -146,7 +147,7 @@ return [
          */
         CacheGrp::MODEL => [
             'className' => MemcachedEngine::class,
-            'prefix' => 'myapp_cake_model_',
+            'prefix' => env('TAG_VERSION', '') . '_myapp_cake_model_',
             'path' => CACHE . 'models' . DS,
             'duration' => '+1 years',
             'url' => env('CACHE_DEFAULT_URL', null),
@@ -159,7 +160,7 @@ return [
          */
         CacheGrp::ROUTES => [
             'className' => MemcachedEngine::class,
-            'prefix' => 'myapp_cake_routes_',
+            'prefix' => env('TAG_VERSION', '') . '_myapp_cake_routes_',
             'path' => CACHE,
             'duration' => '+1 years',
             'url' => env('CACHE_DEFAULT_URL', null),

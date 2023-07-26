@@ -15,6 +15,8 @@ abstract class AppTable extends Table
 {
     use SoftDeleteTrait;
 
+    const TABLE_PREFIX = '';
+
     protected $_validatorClass = AppValidator::class;
 
     public static function load()

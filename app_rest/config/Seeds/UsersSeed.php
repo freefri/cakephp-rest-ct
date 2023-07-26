@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use App\Model\Table\AppTable;
 use Migrations\AbstractSeed;
 
 class UsersSeed extends AbstractSeed
@@ -41,7 +42,7 @@ class UsersSeed extends AbstractSeed
             ],
         ];
 
-        $table = $this->table('users');
+        $table = $this->table(AppTable::TABLE_PREFIX . 'users');
         $table->insert($data)->save();
     }
 }

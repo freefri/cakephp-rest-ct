@@ -45,6 +45,8 @@ class CreateOauthClients extends AbstractMigration
             'limit' => 80,
             'null' => true,
         ]);
-        $table->create();
+        if (!$table->exists()) {
+            $table->create();
+        }
     }
 }

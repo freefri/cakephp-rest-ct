@@ -32,6 +32,8 @@ class CreateOauthAccessTokens extends AbstractMigration
             'limit' => 2000,
             'null' => true,
         ]);
-        $table->create();
+        if (!$table->exists()) {
+            $table->create();
+        }
     }
 }

@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use App\Model\Table\AppTable;
 use Migrations\AbstractMigration;
 
 class CreateUsers extends AbstractMigration
@@ -14,7 +15,8 @@ class CreateUsers extends AbstractMigration
      */
     public function change()
     {
-        $table = $this->table('users');
+        $table = $this->table(AppTable::TABLE_PREFIX . 'users',
+            ['collation'=>'utf8mb4_unicode_ci']);
         $table->addColumn('email', 'string', [
             'default' => null,
             'limit' => 160,
