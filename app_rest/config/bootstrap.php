@@ -20,7 +20,7 @@ declare(strict_types=1);
  */
 require __DIR__ . DIRECTORY_SEPARATOR . 'paths.php';
 
-$_SERVER['CACHE_DEFAULT_URL'] = 'memcached://memcached';
+//$_SERVER['CACHE_DEFAULT_URL'] = 'memcached://memcached';
 
 /*
  * Bootstrap CakePHP.
@@ -39,8 +39,8 @@ use Cake\Core\Configure\Engine\PhpConfig;
 use Cake\Database\TypeFactory;
 use Cake\Database\Type\StringType;
 use Cake\Datasource\ConnectionManager;
-use Cake\Error\ConsoleErrorHandler;
-use Cake\Error\ErrorHandler;
+use Cake\Error\ErrorTrap;
+use Cake\Error\ExceptionTrap;
 use Cake\Http\ServerRequest;
 use Cake\Log\Log;
 use Cake\Mailer\Mailer;
@@ -125,11 +125,8 @@ ini_set('intl.default_locale', Configure::read('App.defaultLocale'));
  * Register application error and exception handlers.
  */
 $isCli = PHP_SAPI === 'cli';
-if ($isCli) {
-    (new ConsoleErrorHandler(Configure::read('Error')))->register();
-} else {
-    (new ErrorHandler(Configure::read('Error')))->register();
-}
+(new ErrorTrap(Configure::read('Error')))->register();
+(new ExceptionTrap(Configure::read('Error')))->register();
 
 /*
  * Include the CLI bootstrap overrides.
@@ -217,3 +214,20 @@ TypeFactory::map('time', StringType::class);
 //Inflector::rules('plural', ['/^(inflect)or$/i' => '\1ables']);
 //Inflector::rules('irregular', ['red' => 'redlings']);
 //Inflector::rules('uninflected', ['dontinflectme']);
+\Cake\I18n\FrozenTime::setJsonEncodeFormat(
+    function () {
+        /** @var \Cake\I18n\FrozenTime $frozenTime */
+        $frozenTime = func_get_arg(0);
+        return $frozenTime->i18nFormat(
+            "yyyy-MM-dd'T'HH':'mm':'ssxxx",
+            null,
+            \App\Lib\Consts\Languages::ENG
+        );
+    });
+
+function migrationList(): array
+{
+    return [
+        [],
+    ];
+}

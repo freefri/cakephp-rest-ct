@@ -5,16 +5,27 @@ namespace App\Model\Table;
 use App\Lib\Consts\CacheGrp;
 use App\Model\Entity\User;
 use Cake\Auth\DefaultPasswordHasher;
+use Cake\Cache\Cache;
+use Cake\Core\Configure;
+use Cake\Datasource\Exception\RecordNotFoundException;
+use Cake\Http\Client;
 use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Exception\InternalErrorException;
 use Cake\Http\Exception\UnauthorizedException;
-use Cake\ORM\TableRegistry;
+use Listing\Model\Table\NotebooksTable;
 
 class UsersTable extends AppTable
 {
+    public function __construct(array $config = [])
+    {
+        $this->_table = env('USERS_TABLE', 'users');
+        parent::__construct($config);
+    }
+
     public static function load(): UsersTable
     {
         /** @var UsersTable $table */
-        $table = TableRegistry::getTableLocator()->get('Users');
+        $table = parent::load();
         return $table;
     }
 

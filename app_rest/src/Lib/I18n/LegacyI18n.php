@@ -2,6 +2,7 @@
 
 namespace App\Lib\I18n;
 
+use App\Lib\Consts\Languages;
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Http\Exception\BadRequestException;
@@ -17,6 +18,14 @@ use L;
 
 class LegacyI18n extends I18n
 {
+    public const LANGUAGES = [
+        'en' => Languages::ENG,
+        'de' => Languages::DEU,
+        'pt' => Languages::POR,
+        'ar' => Languages::ARB,
+        'es' => Languages::SPA,
+    ];
+
     public static function translators(): TranslatorRegistry
     {
         if (static::$_collection !== null) {
@@ -77,21 +86,26 @@ class LegacyI18n extends I18n
 
     public static function isDefaultRtl(): string
     {
-        $defaultLang = LegacyI18n::convertTo3Letter(Configure::read('Company.lang_url'));
+        $defaultLang = env('DEFAULT_LANGUAGE');
         return Configure::read('i18n.languages.' . $defaultLang . '.dir') == 'rtl';
     }
 
-    public static function convertTo3Letter($lang2letter): string
+    public static function convertTo4Letter($lang2letter): string
     {
-        $languages = Configure::read('i18n.languages');
-        if (!$languages) {
-            throw new BadRequestException('Languages cannot be loaded from Configure');
+        $language = self::LANGUAGES[$lang2letter] ?? null;
+        if (!$language) {
+            throw new BadRequestException('Language (2 letter) does not exist ' . $lang2letter);
         }
-        foreach ($languages as $iso3letter => $lang) {
-            if ($lang['url'] == $lang2letter) {
-                return $iso3letter;
-            }
+        return $language;
+    }
+
+    public static function setDefaultLocale()
+    {
+        $defaultLang = env('DEFAULT_LANGUAGE');
+        if ($defaultLang) {
+            parent::setLocale(self::convertTo4Letter($defaultLang));
+        } else {
+            parent::setLocale(Languages::ENG);
         }
-        throw new BadRequestException('Language (2 letter) does not exist ' . $lang2letter);
     }
 }

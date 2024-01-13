@@ -64,6 +64,17 @@ session_id('cli');
 // load schema from a SQL dump file with
 // use Cake\TestSuite\SchemaLoader;
 // (new SchemaManager())->loadSqlFiles('./tests/schema.sql', 'test');
-(new Migrator())->run();
+//(new Migrator())->runMany(migrationList());
+\RestApi\Lib\RestMigrator::runAll(migrationList());
 
 $_SERVER['HTTP_HOST'] = 'dev.example.com';
+\Cake\I18n\FrozenTime::setJsonEncodeFormat(
+    function () {
+        /** @var \Cake\I18n\FrozenTime $frozenTime */
+        $frozenTime = func_get_arg(0);
+        return $frozenTime->i18nFormat(
+            "yyyy-MM-dd'T'HH':'mm':'ssxxx",
+            null,
+            \App\Lib\Consts\Languages::ENG
+        );
+    });

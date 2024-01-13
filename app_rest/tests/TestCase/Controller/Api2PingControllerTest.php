@@ -1,10 +1,11 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
+use App\Controller\Api2Controller;
 use App\Controller\Api2PingController;
+use App\Lib\Consts\Languages;
 use App\Lib\I18n\LegacyI18n;
 
 class Api2PingControllerTest extends Api2CommonErrorsTest
@@ -15,15 +16,15 @@ class Api2PingControllerTest extends Api2CommonErrorsTest
 
     protected function _getEndpoint(): string
     {
-        return '/api/v2/ping/';
+        return Api2Controller::ROUTE_PREFIX . '/ping/';
     }
 
     public function testGetData_gets()
     {
-        $lang = 'eng';
+        $lang = Languages::ENG;
         LegacyI18n::setLocale($lang);
-        $this->get($this->_getEndpoint() . Api2PingController::SECRET);
-        $this->assertResponseOk($this->_getBodyAsString());
+        $this->get($this->_getEndpoint() . Api2PingController::SECRET . '?migrations=false');
+        $this->assertJsonResponseOK();
         $bodyDecoded = json_decode($this->_getBodyAsString(), true);
         $this->assertEquals($lang, $bodyDecoded['data'][0]);
         $this->assertEquals('dev.example.com', $bodyDecoded['data'][1]);

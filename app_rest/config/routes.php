@@ -1,11 +1,12 @@
 <?php
+declare(strict_types=1);
 
-use Cake\Http\Middleware\CsrfProtectionMiddleware;
+use App\Controller\Api2Controller;
 use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 
 return static function (RouteBuilder $routes) {
-    $routes->scope('/api/v2', function (RouteBuilder $builder) {
+    $routes->scope(Api2Controller::ROUTE_PREFIX, function (RouteBuilder $builder) {
         // Register scoped middleware for in scopes.
         $builder->registerMiddleware('csrf', new CsrfProtectionMiddleware([
             'httponly' => true,

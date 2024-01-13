@@ -10,6 +10,7 @@ use App\Model\Entity\Trainer;
 use App\Model\Table\ServicesTable;
 use Cake\Controller\Component;
 use Cake\Controller\ComponentRegistry;
+use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Event\EventInterface;
@@ -37,14 +38,10 @@ class OAuthServerComponent extends Component
             return $controller->getResponse();
         }
         $this->server->setupOauth($controller);
-        if ($controller && $controller->useJWT) {
-            $this->server->setUseJWT();
-        }
         if (!$this->_skipAuth) {
             $this->server->verifyAuthorization();
-            $this->verifyAdminAction($controller);
-            $this->server->parseRequestParamIDs($controller);
-            $this->server->authorizeGroup($controller);
+            $this->_verifyAdminAction($controller);
+            $this->_parseRequestParamIDs($controller);
         }
         if ($controller && $controller->getRequest()->is(['POST', 'PUT', 'PATCH'])) {
             if (!$controller->getRequest()->getData()) {
@@ -61,7 +58,7 @@ class OAuthServerComponent extends Component
         }
     }
 
-    public function verifyAdminAction(Api2Controller $controller)
+    private function _verifyAdminAction(Api2Controller $controller)
     {
         $path = explode('/', $controller->getRequest()->getPath());
         if ($path[3] === 'admin') {
@@ -103,11 +100,6 @@ class OAuthServerComponent extends Component
         return $this->server->getUserGroup();
     }
 
-    public function isTrainerWithAccessLevel($accessLevel): bool
-    {
-        return $this->server->isTrainerWithAccessLevel($accessLevel);
-    }
-
     public function applyTrainerFiltersToBookings($query, $sellerId)
     {
         $servicesId = $this->checkAccessServiceByTrainer($sellerId);
@@ -130,9 +122,9 @@ class OAuthServerComponent extends Component
     {
         if ($this->isTrainerUser()) {
             $isSameParent = $this->getTrainerParent() == $sellerId;
-            if (!$isSameParent || $this->isTrainerWithAccessLevel(Trainer::ACCESS_NONE)) {
+            if (!$isSameParent || $this->isTrainerWithGrantLevel(Trainer::ACCESS_NONE)) {
                 throw new ForbiddenException('Resource not allowed with this token');
-            } else if ($this->isTrainerWithAccessLevel(Trainer::ACCESS_RESTRICTED)) {
+            } else if ($this->isTrainerWithGrantLevel(Trainer::ACCESS_RESTRICTED)) {
                 $Services = ServicesTable::load();
                 $serviceIDs = $Services->getServicesIdByTrainer($sellerId, $this->getUserID());
                 if (count($serviceIDs) < 1) {
@@ -163,4 +155,18 @@ class OAuthServerComponent extends Component
     {
         return $this->server->getUser3LetterLang();
     }
-}
+
+    private function _parseRequestParamIDs(Controller $controller)
+    {
+        $idName = strtolower(substr($controller->getName(), 4, -1)) . 'ID';
+        $idValue = $controller->getRequest()->getParam('pass')[0] ?? null;
+        if ($idValue !== null) {
+            $req = $controller->getRequest();
+            $req->withParam($idName, $idValue);
+            $controller->setRequest($req);
+        } else {
+            if (!$controller->getRequest()->is(['POST', 'GET'])) {
+                throw new BadRequestException('HTTP method requires ID');
+            }
+        }
+    }}

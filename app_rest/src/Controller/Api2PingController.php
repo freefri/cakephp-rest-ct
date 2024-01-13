@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Controller;
 
@@ -6,7 +7,9 @@ use App\Lib\Consts\CacheGrp;
 use App\Lib\I18n\LegacyI18n;
 use Cake\Cache\Cache;
 use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Exception\HttpException;
 use Cake\I18n\FrozenTime;
+use Migrations\Migrations;
 
 class Api2PingController extends Api2Controller
 {
@@ -42,7 +45,31 @@ class Api2PingController extends Api2Controller
             '2' => env('APPLICATION_ENV', ''),
             '3' => $cache,
             '4' => new FrozenTime(),
+            '5' => env('TEST_ENV', ''),
+            '6' => env('TAG_VERSION', ''),
         ];
+
+        $migrationList = migrationList();
+        if ($this->request->getQuery('migrations') !== 'false') {
+            $this->_runMigrations($migrationList, $toRet);
+        }
         $this->return = $toRet;
+    }
+
+    private function _runMigrations(array $migrationList, array $toRet): void
+    {
+        $migrations = new Migrations();
+        try {
+            foreach ($migrationList as $options) {
+                $last = $options;
+                //$migrations->markMigrated(20220113094521);
+                $migrations->migrate($options);
+                //$migrations->seed($options);
+            }
+        } catch (\Exception $e) {
+            $toRet[] = $migrations->status($last);
+            $toRet[] = $e->getMessage();
+            throw new HttpException(json_encode($toRet), 500, $e);
+        }
     }
 }

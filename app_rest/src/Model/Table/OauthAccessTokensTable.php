@@ -8,19 +8,25 @@ use Cake\Cache\Cache;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\Http\Exception\NotImplementedException;
+use Cake\Http\Exception\UnauthorizedException;
 use Cake\I18n\FrozenTime;
-use Cake\ORM\TableRegistry;
 use OAuth2\Storage\AccessTokenInterface;
 use OAuth2\Storage\AuthorizationCodeInterface;
 use OAuth2\Storage\ClientCredentialsInterface;
 use OAuth2\Storage\PublicKeyInterface;
 use OAuth2\Storage\UserCredentialsInterface;
 
+
+/**
+ * @property UsersTable $Users
+ */
 class OauthAccessTokensTable extends AppTable implements
     PublicKeyInterface, ClientCredentialsInterface, AccessTokenInterface,
     AuthorizationCodeInterface, UserCredentialsInterface
 {
     const CACHE_GROUP = CacheGrp::ACL;
+
+    protected $_table = 'oauth_access_tokens';
 
     public function initialize(array $config): void
     {
@@ -33,7 +39,7 @@ class OauthAccessTokensTable extends AppTable implements
     public static function load(): OauthAccessTokensTable
     {
         /** @var OauthAccessTokensTable $table */
-        $table = TableRegistry::getTableLocator()->get('OauthAccessTokens');
+        $table = parent::load();
         return $table;
     }
 
@@ -251,6 +257,15 @@ class OauthAccessTokensTable extends AppTable implements
             return false;
         }
         return empty($res['client_secret']);
+    }
+
+    public function checkUserAccessToken ($userId, $token) {
+        $userToken =$this->find()
+            ->where(['user_id' => $userId, 'access_token' => $token])
+            ->first();
+        if (!$userToken) {
+            throw new UnauthorizedException('Invalid user credentials');
+        }
     }
 
     public function expireUserTokens($userId): void

@@ -28,14 +28,21 @@ class ApiCorsComponent extends Component
 
             $allowedCors = Configure::read('App.Cors.AllowOrigin');
             $currentOrigin = $_SERVER['HTTP_ORIGIN'] ?? '';
-            if ($currentOrigin && in_array($currentOrigin, $allowedCors)) {
+            $isAnyOriginAllowed = ($allowedCors[0] ?? null) === '*';
+            $isSameCors = in_array($currentOrigin, $allowedCors);
+            if ($currentOrigin && ($isAnyOriginAllowed || $isSameCors)) {
                 $responseBuilder->allowOrigin([$currentOrigin])
                     ->allowCredentials();
             }
             if ($controller->getRequest()->is('options')) {
                 $responseBuilder
                     ->allowMethods(['POST', 'GET', 'PATCH', 'PUT', 'DELETE'])
-                    ->allowHeaders(['Authorization', 'Content-Type', 'Accept-Language'])
+                    ->allowHeaders([
+                        'Authorization',
+                        'Content-Type',
+                        'Accept-Language',
+                        'X-Experience-API-Version'
+                    ])
                     ->maxAge(3600);
                 $response = $responseBuilder->build();
                 $controller->setResponse($response);

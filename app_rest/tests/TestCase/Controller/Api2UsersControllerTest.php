@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
-use App\Model\Table\UsersTable;
+use App\Controller\Api2Controller;
 
 class Api2UsersControllerTest extends Api2CommonErrorsTest
 {
@@ -14,7 +14,7 @@ class Api2UsersControllerTest extends Api2CommonErrorsTest
 
     protected function _getEndpoint(): string
     {
-        return '/api/v2/users/';
+        return Api2Controller::ROUTE_PREFIX . '/users/';
     }
 
     public function testAddNew_InputData()

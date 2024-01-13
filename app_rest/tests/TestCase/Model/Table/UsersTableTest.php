@@ -2,6 +2,7 @@
 namespace App\Test\TestCase\View\Helper;
 
 use App\Lib\Consts\CacheGrp;
+use App\Lib\Consts\UserGroups;
 use App\Model\Table\UsersTable;
 use App\Test\Fixture\UsersFixture;
 use Cake\Cache\Cache;
@@ -34,7 +35,7 @@ class UsersTableTest extends TestCase
         $this->assertInstanceOf('Cake\ORM\Query', $query);
         $this->assertNotEmpty($query->all()->toArray(), 'returns not empty');
         $uid = UsersFixture::SELLER_ID;
-        $group_id = 3;
+        $group_id = UserGroups::SELLER;
         Cache::delete('_getFirst' . $uid, CacheGrp::EXTRALONG);
 
         $this->assertEquals($group_id, $this->Users->get($uid)->group_id, 'wrong get()');
