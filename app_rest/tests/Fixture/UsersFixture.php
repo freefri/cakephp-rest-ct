@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Test\Fixture;
 
-use App\Lib\Consts\AccessLevel;
 use App\Lib\Consts\UserGroups;
 use RestApi\TestSuite\Fixture\RestApiFixture;
 
@@ -22,7 +21,6 @@ class UsersFixture extends RestApiFixture
             'lastname' => 'My Surname',
             'password' => '$2y$10$1cCayk8qquFFWyvk161qZuOm4kgLFbmg4O1ItVQ5Qt.w3V28VNUk2',
             'group_id' => UserGroups::SELLER,
-            'access_level' => AccessLevel::FULL_ACCESS,
             'created' => '2021-01-18 10:39:23',
             'modified' => '2021-01-18 10:41:31'
         ],

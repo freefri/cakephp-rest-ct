@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Component;
 
-use App\Controller\Api2Controller;
+use App\Controller\ApiController;
 use App\Lib\Exception\DetailedException;
 use App\Lib\Oauth\OAuthServer;
 use App\Model\Entity\Trainer;
@@ -32,7 +32,7 @@ class OAuthServerComponent extends Component
 
     public function beforeFilter(EventInterface $event)
     {
-        /** @var Api2Controller $controller */
+        /** @var ApiController $controller */
         $controller = $event->getSubject();
         if ($controller->getRequest()->is('options')) {
             return $controller->getResponse();
@@ -58,7 +58,7 @@ class OAuthServerComponent extends Component
         }
     }
 
-    private function _verifyAdminAction(Api2Controller $controller)
+    private function _verifyAdminAction(ApiController $controller)
     {
         $path = explode('/', $controller->getRequest()->getPath());
         if ($path[3] === 'admin') {

@@ -6,9 +6,8 @@ namespace App\Test\TestCase\Controller;
 use App\Lib\Consts\CacheGrp;
 use App\Test\Fixture\OauthAccessTokensFixture;
 use Cake\Cache\Cache;
-use RestApi\TestSuite\ApiCommonErrorsTest;
 
-abstract class Api2CommonErrorsTest extends ApiCommonErrorsTest
+abstract class ApiCommonErrorsTest extends \RestApi\TestSuite\ApiCommonErrorsTest
 {
     protected function clearUserCache()
     {

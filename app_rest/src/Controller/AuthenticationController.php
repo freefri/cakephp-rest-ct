@@ -13,7 +13,7 @@ use RestApi\Lib\Helpers\CookieHelper;
  * @property UsersTable $Users
  * @property OAuthServerComponent $OAuthServer
  */
-class Api2AuthenticationController extends Api2Controller
+class AuthenticationController extends ApiController
 {
     /** @var CookieHelper */
     public $CookieHelper;

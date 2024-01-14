@@ -6,7 +6,7 @@ use App\Lib\I18n\LegacyI18n;
 use Cake\Cache\Cache;
 use Cake\Routing\Router;
 
-class Api2RootController extends Api2Controller
+class RootController extends ApiController
 {
     public function isPublicController(): bool
     {

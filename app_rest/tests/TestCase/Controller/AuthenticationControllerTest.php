@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\Api2Controller;
+use App\Controller\ApiController;
 use App\Model\Table\UsersTable;
 use App\Test\Fixture\OauthClientsFixture;
 use App\Test\Fixture\UsersFixture;
 
-class Api2AuthenticationControllerTest extends Api2CommonErrorsTest
+class AuthenticationControllerTest extends ApiCommonErrorsTest
 {
     protected $fixtures = [
         UsersFixture::LOAD,
@@ -19,7 +19,7 @@ class Api2AuthenticationControllerTest extends Api2CommonErrorsTest
 
     protected function _getEndpoint(): string
     {
-        return Api2Controller::ROUTE_PREFIX . '/authentication/';
+        return ApiController::ROUTE_PREFIX . '/authentication/';
     }
 
     public function setUp(): void

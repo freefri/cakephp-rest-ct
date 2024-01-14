@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\Api2Controller;
+use App\Controller\ApiController;
 
-class Api2UsersControllerTest extends Api2CommonErrorsTest
+class UsersControllerTest extends ApiCommonErrorsTest
 {
     protected $fixtures = [
         'app.Users'
@@ -14,7 +14,7 @@ class Api2UsersControllerTest extends Api2CommonErrorsTest
 
     protected function _getEndpoint(): string
     {
-        return Api2Controller::ROUTE_PREFIX . '/users/';
+        return ApiController::ROUTE_PREFIX . '/users/';
     }
 
     public function testAddNew_InputData()

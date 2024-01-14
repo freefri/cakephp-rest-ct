@@ -12,7 +12,7 @@ use RestApi\Controller\RestApiController;
 /**
  * @property OAuthServerComponent $OAuthServer
  */
-abstract class Api2Controller extends RestApiController
+abstract class ApiController extends RestApiController
 {
     const ROUTE_PREFIX = '/api/v1';
 

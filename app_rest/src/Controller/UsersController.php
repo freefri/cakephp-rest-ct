@@ -8,7 +8,7 @@ use App\Model\Table\UsersTable;
 /**
  * @property UsersTable $Users
  */
-class Api2UsersController extends Api2Controller
+class UsersController extends ApiController
 {
     public function initialize(): void
     {

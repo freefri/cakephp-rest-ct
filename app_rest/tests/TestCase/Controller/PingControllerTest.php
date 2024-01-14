@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\Api2Controller;
-use App\Controller\Api2PingController;
+use App\Controller\ApiController;
+use App\Controller\PingController;
 use App\Lib\Consts\Languages;
 use App\Lib\I18n\LegacyI18n;
 use App\Test\Fixture\UsersFixture;
 
-class Api2PingControllerTest extends Api2CommonErrorsTest
+class PingControllerTest extends ApiCommonErrorsTest
 {
     protected $fixtures = [
         UsersFixture::LOAD,
@@ -17,14 +17,14 @@ class Api2PingControllerTest extends Api2CommonErrorsTest
 
     protected function _getEndpoint(): string
     {
-        return Api2Controller::ROUTE_PREFIX . '/ping/';
+        return ApiController::ROUTE_PREFIX . '/ping/';
     }
 
     public function testGetData_gets()
     {
         $lang = Languages::ENG;
         LegacyI18n::setLocale($lang);
-        $this->get($this->_getEndpoint() . Api2PingController::SECRET . '?migrations=false');
+        $this->get($this->_getEndpoint() . PingController::SECRET . '?migrations=false');
         $this->assertJsonResponseOK();
         $bodyDecoded = json_decode($this->_getBodyAsString(), true);
         $this->assertEquals($lang, $bodyDecoded['data'][0]);

@@ -10,7 +10,7 @@ use Cake\Http\Exception\BadRequestException;
 use Cake\I18n\FrozenTime;
 use RestApi\Lib\RestMigrator;
 
-class Api2PingController extends Api2Controller
+class PingController extends ApiController
 {
     const SECRET = 'pong';
 
