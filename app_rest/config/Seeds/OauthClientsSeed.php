@@ -6,7 +6,7 @@ use Migrations\AbstractSeed;
 
 class OauthClientsSeed extends AbstractSeed
 {
-    public function run()
+    public function run(): void
     {
         $data = [
             [

@@ -2,13 +2,14 @@
 
 namespace App\Test\Fixture;
 
-use Cake\TestSuite\Fixture\TestFixture;
+use RestApi\TestSuite\Fixture\RestApiFixture;
 
-class OauthClientsFixture extends TestFixture
+class OauthClientsFixture extends RestApiFixture
 {
     const LOAD = 'app.OauthClients';
     const DASHBOARD_CLI = '2658';
 
+    public $table = 'oauth_clients';
     public $records = [];
 
     public function __construct()

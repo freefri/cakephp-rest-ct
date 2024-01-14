@@ -34,7 +34,11 @@ class ExceptionRenderer extends \Cake\Error\ExceptionRenderer
 
         $message = $this->_message($exception, $code);
         $response = $this->controller->getResponse();
-        $response = $response->withStatus($code);
+        $reasonPhrase = '';
+        if (method_exists($exception, 'getReasonPhrase')) {
+            $reasonPhrase = $exception->getReasonPhrase();
+        }
+        $response = $response->withStatus($code, $reasonPhrase);
 
         $viewVars = $this->_getAnwser($response->getReasonPhrase(), $exception, $message);
         $serialize = array_keys($viewVars);

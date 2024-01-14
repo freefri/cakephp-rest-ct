@@ -7,11 +7,12 @@ use App\Controller\Api2Controller;
 use App\Controller\Api2PingController;
 use App\Lib\Consts\Languages;
 use App\Lib\I18n\LegacyI18n;
+use App\Test\Fixture\UsersFixture;
 
 class Api2PingControllerTest extends Api2CommonErrorsTest
 {
     protected $fixtures = [
-        'app.Users'
+        UsersFixture::LOAD,
     ];
 
     protected function _getEndpoint(): string

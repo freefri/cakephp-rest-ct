@@ -6,7 +6,7 @@ use Migrations\AbstractSeed;
 
 class UsersSeed extends AbstractSeed
 {
-    public function run()
+    public function run(): void
     {
         $now = date('Y-m-d H:i:00');
         $data = [

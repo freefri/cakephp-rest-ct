@@ -3,11 +3,11 @@
 namespace App\Controller;
 
 use App\Controller\Component\OAuthServerComponent;
-use App\Lib\Helpers\CookieHelper;
 use App\Lib\Oauth\OAuthServer;
 use App\Model\Table\OauthAccessTokensTable;
 use App\Model\Table\UsersTable;
 use Cake\Http\Exception\BadRequestException;
+use RestApi\Lib\Helpers\CookieHelper;
 
 /**
  * @property UsersTable $Users

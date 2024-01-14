@@ -41,7 +41,7 @@ class OAuthServer
 
     public function __construct(array $config = [])
     {
-        $this->_storage = TableRegistry::getTableLocator()->get('OauthAccessTokens');
+        $this->_storage = OauthAccessTokensTable::load();
 
         foreach ($config as $key => $value) {
             $this->{'_' . $key} = $value;

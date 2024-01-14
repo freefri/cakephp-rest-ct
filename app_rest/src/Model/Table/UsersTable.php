@@ -5,14 +5,8 @@ namespace App\Model\Table;
 use App\Lib\Consts\CacheGrp;
 use App\Model\Entity\User;
 use Cake\Auth\DefaultPasswordHasher;
-use Cake\Cache\Cache;
-use Cake\Core\Configure;
-use Cake\Datasource\Exception\RecordNotFoundException;
-use Cake\Http\Client;
 use Cake\Http\Exception\BadRequestException;
-use Cake\Http\Exception\InternalErrorException;
 use Cake\Http\Exception\UnauthorizedException;
-use Listing\Model\Table\NotebooksTable;
 
 class UsersTable extends AppTable
 {

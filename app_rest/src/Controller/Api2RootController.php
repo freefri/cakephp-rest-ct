@@ -33,11 +33,7 @@ class Api2RootController extends Api2Controller
                 ],
                 'documentation' => [
                     'title' => 'API docs',
-                    'href' => 'https://courseticket-nilus.gitlab.io/API-v2'
-                ],
-                'old_documentation' => [
-                    'title' => 'API docs - deprecated',
-                    'href' => 'https://courseticket-nilus.gitlab.io/API-v1'
+                    'href' => 'https://github.com/freefri/cakephp-rest-ct'
                 ]
             ],
         ];

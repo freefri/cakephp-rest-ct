@@ -7,7 +7,7 @@ use Migrations\AbstractSeed;
 
 class OauthAccessTokensSeed extends AbstractSeed
 {
-    public function run()
+    public function run(): void
     {
         $data = [
             [

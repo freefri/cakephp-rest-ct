@@ -1,9 +1,5 @@
 # CakePHP Application Skeleton
 
-![Build Status](https://github.com/cakephp/app/actions/workflows/ci.yml/badge.svg?branch=master)
-[![Total Downloads](https://img.shields.io/packagist/dt/cakephp/app.svg?style=flat-square)](https://packagist.org/packages/cakephp/app)
-[![PHPStan](https://img.shields.io/badge/PHPStan-level%207-brightgreen.svg?style=flat-square)](https://github.com/phpstan/phpstan)
-
 A skeleton for creating applications with [CakePHP](https://cakephp.org) 4.x.
 
 # License
@@ -50,6 +46,14 @@ You can run [tests](https://book.cakephp.org/4/en/development/testing.html) usin
 But using an **IDE** is desirable (e.g. PhpStorm)
 
 Generate test coverage with: `vendor/bin/phpunit --coverage-html ./webroot/coverage/*`
+
+# Working with plugins
+Follow cakephp [plugin](https://book.cakephp.org/4/en/plugins.html) documentation:
+- Bake a plugin with `bin/cake bake plugin Thename`
+- Add new directories to `composer.json` and refresh autoload cache with `composer dumpautoload` (remind the team to run this in every local laptop, or they may get errors)
+- Remember to add the new route to tests in `phpunit.xml`
+- Add new plugin to `migrationList()` in `app_rest/config/bootstrap.php`
+- Add new plugin to `bootstrap()` in `app_rest/src/Application.php`
 
 # Migrations
 
